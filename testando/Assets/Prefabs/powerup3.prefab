@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7629366592561583065}
   - component: {fileID: 8050757352600471197}
   - component: {fileID: 2319573934413300912}
+  - component: {fileID: 3979927037959233573}
   m_Layer: 0
   m_Name: powerup3
   m_TagString: Untagged
@@ -120,3 +121,20 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.8648267, y: 0.8648267}
   m_Direction: 0
+--- !u!114 &3979927037959233573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4974240490718278854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94bd92c1612d2e047be6f7cc4acd4a63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemArmaEspecial: 1
+  itemDeEscudo: 0
+  itemDeVida: 0
+  referenciaArma: 2
+  vidaParaDar: 0

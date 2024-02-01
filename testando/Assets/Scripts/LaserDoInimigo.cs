@@ -6,9 +6,7 @@ public class LaserDoInimigo : MonoBehaviour
 {
     // Start is called before the first frame update
     public float velocidadeDoLaser;
-    
-
-     //public int danoParaDar;
+    public int danoParaDar;
 
     void Start()
     {
@@ -21,7 +19,7 @@ public class LaserDoInimigo : MonoBehaviour
         MovimentarLaser();
     }
 
-     private void MovimentarLaser()
+    private void MovimentarLaser()
     {
         transform.Translate(Vector3.up * velocidadeDoLaser * Time.deltaTime);
     }

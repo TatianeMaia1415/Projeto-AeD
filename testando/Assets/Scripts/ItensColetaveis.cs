@@ -7,7 +7,7 @@ public class ItensColetaveis : MonoBehaviour
     public bool itemArmaEspecial;
     public bool itemDeEscudo;
     public bool itemDeVida;
-    private int contadorDeArmaEspecial;
+    public int referenciaArma;
     public int vidaParaDar;
 
 
@@ -17,25 +17,33 @@ public class ItensColetaveis : MonoBehaviour
         {
             if(itemArmaEspecial)
             {
-                contadorDeArmaEspecial = contadorDeArmaEspecial + 1;
-                if(contadorDeArmaEspecial >= 3)
+                ControleDoJogador controleJogadorScript = other.gameObject.GetComponent<ControleDoJogador>();
+                if(!controleJogadorScript.temArmasEspeciais)
                 {
-                    other.gameObject.GetComponent<ControleDoJogador>().temArmasEspeciais = true;
+                    // controleJogadorScript.estrelas[controleJogadorScript.contadorDeArmaEspecial].SetActive(true);
+                    controleJogadorScript.contadorDeArmaEspecial++;
+                    controleJogadorScript.armasEspeciaisAtuais.Add(controleJogadorScript.armasEspeciais[referenciaArma]);
+
+                    if(controleJogadorScript.contadorDeArmaEspecial >= 3)
+                    {
+                        controleJogadorScript.temArmasEspeciais = true;
+                        controleJogadorScript.AtivarArmasEspeciais();
+                        controleJogadorScript.contadorDeArmaEspecial = 0;
+                    }
                 }
             }
-
-            if(itemDeEscudo)
+            else if(itemDeEscudo)
             {
 
                 other.gameObject.GetComponent<VidaDoJogador>().AtivarEscudo();
 
             }
-            if(itemDeVida)
+            else if(itemDeVida)
             {
 
                 other.gameObject.GetComponent<VidaDoJogador>().GanharVida(vidaParaDar);
-
             }
+            Destroy(this.gameObject);
 
         }
 

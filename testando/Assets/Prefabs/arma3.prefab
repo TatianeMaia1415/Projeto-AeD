@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2802717695449280083}
   - component: {fileID: 2654949741798539390}
   - component: {fileID: 5513605506450979595}
+  - component: {fileID: -3123345057259604738}
   m_Layer: 0
   m_Name: arma3
   m_TagString: Untagged
@@ -130,3 +131,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.36889076, y: 0.517867}
   m_EdgeRadius: 0
+--- !u!114 &-3123345057259604738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7248634133137986568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc6ccf56a5c5c7948ac08a08c978f8b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocidadeDoLaser: 12
+  danoParaDar: 8

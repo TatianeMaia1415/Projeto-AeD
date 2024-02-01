@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ControleDoJogador : MonoBehaviour
 {
@@ -12,7 +13,8 @@ public class ControleDoJogador : MonoBehaviour
     private Vector2 teclasApertadas;
 
     public GameObject laserDoJogador;
-    public GameObject[] armasEspeciais;
+    public List<GameObject> armasEspeciais;
+    public List<GameObject> armasEspeciaisAtuais;
 
     public Transform localDoDisparoUnico;
     public Transform localDoDisparoDaEsquerda;
@@ -20,10 +22,12 @@ public class ControleDoJogador : MonoBehaviour
 
     public bool temArmasEspeciais;
 
-// public ItensColetaveis itensColetaveis;
-    //public LaserDoJogador laserDoJogador;
+    public ItensColetaveis itensColetaveis;
+    // public LaserDoJogador laserDoJogadorScript;
+    public int contadorDeArmaEspecial;
 
-    //private int heapSize;
+
+    private int heapSize;
 
     public float tempoAtualDasArmasEspeciais;
 
@@ -42,9 +46,7 @@ public class ControleDoJogador : MonoBehaviour
 
       // itensColetaveis.contadorDeArmaEspecial = 0;
 
-      // tempoAtualDasArmasEspeciais = tempoMaximoDasArmasEspeciais;
-
-       
+      tempoAtualDasArmasEspeciais = tempoMaximoDasArmasEspeciais;
     }
 
     
@@ -54,14 +56,16 @@ public class ControleDoJogador : MonoBehaviour
          MovimentarJogador();
          AtirarLaser();
         
-        /*if(temArmasEspeciais == true)
+        //*
+        if(temArmasEspeciais == true)
         {
             tempoAtualDasArmasEspeciais -= Time.deltaTime;
             if(tempoAtualDasArmasEspeciais <= 0)
             {
                 DesativarArmasEspeciais();
             }
-        }*/
+        }
+        //*/
 
     }
 
@@ -70,7 +74,7 @@ public class ControleDoJogador : MonoBehaviour
     {
         //dizer pra unity quais foram as teclas apertadas
         teclasApertadas = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        oRigidbody2D.velocity = teclasApertadas.normalized * velocidadeDaNave;
+        oRigidbody2D.velocity = teclasApertadas.normalized * velocidadeDaNave * Time.deltaTime;
 
     }
 
@@ -78,25 +82,21 @@ public class ControleDoJogador : MonoBehaviour
     {
         if(Input.GetButtonDown("Fire1"))
         {
-            Instantiate(laserDoJogador, localDoDisparoUnico.position, localDoDisparoUnico.rotation);
-           /* if(temArmasEspeciais == true)
+            // Instantiate(laserDoJogador, localDoDisparoUnico.position, localDoDisparoUnico.rotation);
+           //* 
+            if(temArmasEspeciais == true)
             {
-                AtivarArmasEspeciais();
+                UseWeaponWithMaxDamage(); // Atira a arma com maior dano
             }
             else
             {
                 Instantiate(laserDoJogador, localDoDisparoUnico.position, localDoDisparoUnico.rotation);
-                
-            }*/
+            }
+            //*/
         }
     }
 
-    /*private void AtivarArmasEspeciais()
-    {
-    //private GameObject[] ArmasEspeciais;  // Vetor de armas
-    //private int heapSize;
-
-    /*void Start()
+        /*void Start()
     {
         // Inicialize o vetor de armas com GameObjects fictícios para este exemplo.
         ArmasEspeciais = new GameObject[4];
@@ -109,32 +109,40 @@ public class ControleDoJogador : MonoBehaviour
         // Construa a heap MAX.
         BuildMaxHeap();
     }*/
+//*
+    public void AtivarArmasEspeciais() // Atualiza lista de armas especiais e inicializa o Heap
+    {  
+        tempoAtualDasArmasEspeciais = tempoMaximoDasArmasEspeciais;
+        BuildMaxHeap();
+    }
 
-    /*void BuildMaxHeap()
+
+    private void BuildMaxHeap()
     {
-        heapSize = armasEspeciais.Length;
+        heapSize = armasEspeciaisAtuais.Count();
 
         // Comece do último nó não folha e faça heapify para baixo.
-        for (int i = armasEspeciais.Length / 2 - 1; i >= 0; i--)
+        for (int i = armasEspeciaisAtuais.Count() / 2 - 1; i >= 0; i--)
         {
             HeapifyDown(i);
         }
-    }*/
+    }
+    
 
-   /* void HeapifyDown(int index)
+   void HeapifyDown(int index)
     {
         int largest = index;
         int leftChild = 2 * index + 1;
         int rightChild = 2 * index + 2;
 
         // Compare com o filho da esquerda.
-        if (leftChild < heapSize && armasEspeciais[leftChild].laserDoJogador.danoParaDar > armasEspeciais[largest].laserDoJogador.danoParaDar)
+        if (leftChild < heapSize && armasEspeciaisAtuais[leftChild].GetComponent<LaserDoJogador>().danoParaDar > armasEspeciaisAtuais[largest].GetComponent<LaserDoJogador>().danoParaDar)
         {
             largest = leftChild;
         }
 
         // Compare com o filho da direita.
-        if (rightChild < heapSize && armasEspeciais[rightChild].laserDoJogador.danoParaDar > armasEspeciais[largest].laserDoJogador.danoParaDar)
+        if (rightChild < heapSize && armasEspeciaisAtuais[rightChild].GetComponent<LaserDoJogador>().danoParaDar > armasEspeciaisAtuais[largest].GetComponent<LaserDoJogador>().danoParaDar)
         {
             largest = rightChild;
         }
@@ -149,9 +157,9 @@ public class ControleDoJogador : MonoBehaviour
 
     void Swap(int a, int b)
     {
-        GameObject temp = armasEspeciais[a];
-        armasEspeciais[a] = armasEspeciais[b];
-        armasEspeciais[b] = temp;
+        GameObject temp = armasEspeciaisAtuais[a];
+        armasEspeciaisAtuais[a] = armasEspeciaisAtuais[b];
+        armasEspeciaisAtuais[b] = temp;
     }
 
     public void UseWeaponWithMaxDamage()
@@ -162,15 +170,13 @@ public class ControleDoJogador : MonoBehaviour
             
             //ArmasEspeciais[0] = null;  // Substitua pela lógica real de usar a arma.
 
-            Instantiate(armasEspeciais[0], localDoDisparoDaEsquerda.position, localDoDisparoDaEsquerda.rotation);
-            Instantiate(armasEspeciais[0], localDoDisparoDaDireita.position, localDoDisparoDaDireita.rotation);
+            Instantiate(armasEspeciaisAtuais[0], localDoDisparoDaEsquerda.position, localDoDisparoDaEsquerda.rotation);
+            Instantiate(armasEspeciaisAtuais[0], localDoDisparoDaDireita.position, localDoDisparoDaDireita.rotation);
 
-            heapSize--;
 
-            // Rebuild heap após usar a arma.
-            BuildMaxHeap();
+            
 
-            if (heapSize == 0)
+            if (armasEspeciaisAtuais.Count() == 0)
             {
                 Debug.Log("O vetor de armas está vazio. Todas as armas foram usadas.");
             }
@@ -180,16 +186,28 @@ public class ControleDoJogador : MonoBehaviour
             Debug.Log("O vetor de armas já está vazio. Todas as armas foram usadas.");
         }
     }
-    }
-
-
+    
+    
     private void DesativarArmasEspeciais()
     {
         
-        temArmasEspeciais = false;
-
         tempoAtualDasArmasEspeciais = tempoMaximoDasArmasEspeciais;
-    }*/
+        if(armasEspeciaisAtuais.Count() > 0)
+        {
+            armasEspeciaisAtuais.Remove(armasEspeciaisAtuais[0]);
+            if(armasEspeciaisAtuais.Count() == 0)
+                temArmasEspeciais = false;
+                //desativar estrelas
+            // Rebuild heap após usar a arma.
+            BuildMaxHeap();
+        }
+        else
+        {
+            temArmasEspeciais = false;
+        }
     }
+    //*/
+    
+}
 
 
